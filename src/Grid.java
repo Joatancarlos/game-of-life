@@ -1,26 +1,13 @@
 import java.util.Arrays;
 
-public class Grid {
-    private final int height;
-    private final int width;
-    private final int totalGeneration;
-    private final int speed;
-    //      Se não tiver uma população inicial, deve ser gerada randomicamente
-    private final String initialPopulation;
-    private final int typeNeighborhood;
-
-    public Grid(int height, int width, int totalGeneration, int speed, String initialPopulation, int typeNeighborhood) {
-        this.height = height;
-        this.width = width;
-        this.totalGeneration = totalGeneration;
-        this.speed = speed;
-        this.initialPopulation = initialPopulation;
-        this.typeNeighborhood = typeNeighborhood;
+public class Grid extends Settings{
+    public Grid(int height, int width, int speed, String initialPopulation, int typeNeighborhood) {
+        super(height, width, speed, initialPopulation, typeNeighborhood);
     }
 
      int [][] generateGrid() {
-        int [][] grid = new int[height][width];
-        String[] rows = initialPopulation.split("#");
+        int [][] grid = new int[getHeight()][getWidth()];
+        String[] rows = getInitialPopulation().split("#");
 //             Preenche o grid com 0's
         for (int i = 0; i < grid.length; i++) {
             Arrays.fill(grid[i], 0);
@@ -28,7 +15,7 @@ public class Grid {
 //            Insere as células vivas ou mortas com base na população inicial
         for (int i = 0; i < rows.length; i++) {
 
-            if (rows[i].length() <= width) {
+            if (rows[i].length() <= getWidth()) {
                 if (rows[i] != "") {
                     for (int j = 0; j < rows[i].length(); j++) {
                         char oneOrZero = rows[i].charAt(j);
@@ -36,7 +23,7 @@ public class Grid {
                     }
                 }
             } else {
-                int removeValues = rows[i].length() - width;
+                int removeValues = rows[i].length() - getWidth();
                 System.out.println("The size of the line " + rows[i] + " is greater than the length of the table." + " Remove " + removeValues + " values.");
                 System.exit(0);
             }

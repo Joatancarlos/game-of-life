@@ -18,4 +18,24 @@ public class Settings {
         this.initialPopulation = initialPopulation;
         this.typeNeighborhood = typeNeighborhood;
     }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public String getInitialPopulation() {
+        return initialPopulation;
+    }
+
+    public int getTypeNeighborhood() {
+        return typeNeighborhood;
+    }
 }

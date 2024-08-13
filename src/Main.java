@@ -6,7 +6,6 @@ public class Main {
         Grid grid = new Grid(
                 gameConfig.height,
                 gameConfig.width,
-                gameConfig.totalGeneration,
                 gameConfig.speed,
                 gameConfig.initialPopulation,
                 gameConfig.typeNeighborhood
