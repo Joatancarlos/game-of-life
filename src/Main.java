@@ -14,7 +14,8 @@ public class Main {
         int [][] generateGrid = grid.generateGrid();
         int currentGeneretion = 0;
 
-        while (gameConfig.totalGeneration == 0 ? true: currentGeneretion < gameConfig.totalGeneration) {
+//        Caso o parâmetro seja 0, o while vai rodar infinitamente.
+        while (gameConfig.totalGeneration == 0 ? true : currentGeneretion < gameConfig.totalGeneration) {
 //              Analisar o grid e verificar as regras
             try {
                 System.out.println("Stats: Grid size: [" + gameConfig.height + " x " + gameConfig.width + "] - Speed: [" + gameConfig.speed + " ms] - Generation: [" + currentGeneretion + "] ");
