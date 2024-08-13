@@ -3,13 +3,7 @@ public class Main {
     public static void main(String[] args) {
         GameConfig gameConfig = GameConfig.parseArgs(args);
 
-        Grid grid = new Grid(
-                gameConfig.height,
-                gameConfig.width,
-                gameConfig.speed,
-                gameConfig.initialPopulation,
-                gameConfig.typeNeighborhood
-        );
+        Grid grid = new Grid(gameConfig);
         int [][] generateGrid = grid.generateGrid();
         int currentGeneretion = 0;
 
