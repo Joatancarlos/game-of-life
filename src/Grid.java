@@ -1,30 +1,27 @@
 import java.util.Arrays;
-
 public class Grid {
-    private final int height;
-    private int width;
-    private int totalGeneration;
-    private int speed;
-    //      Se não tiver uma população inicial, deve ser gerada randomicamente
-    private String initialPopulation;
-    private int typeNeighborhood;
+    private int[][] grid;
 
-    public Grid(GameConfig gameConfig) {
-        this.height = gameConfig.height;
-        this.width = gameConfig.width;
-        this.totalGeneration = gameConfig.totalGeneration;
-        this.speed = gameConfig.speed;
-        this.initialPopulation = gameConfig.initialPopulation;
-        this.typeNeighborhood = gameConfig.typeNeighborhood;
+    public Grid(GameConfig config) {
+        this.grid = generateGrid(config.getInitialPopulation(), config.getHeight(), config.getWidth());
     }
 
-     int [][] generateGrid() {
+    /**
+     * Gera um grid bidimensional com valores iniciais definidos como 0. Esses valores podem
+     * ser alterados para 1 (célula viva) ou permanecer como 0 (célula morta) de
+     * acordo com a população inicial fornecida.
+     * @param initialPopulation É uma ‘string’ que representa as linhas do grid sendo composta por 0's e 1's.
+     * @param height Número de linhas do grid.
+     * @param width Número de colunas do grid.
+     * @return Um grid 2D com as células vivas ou mortas com base na população inicial.
+     * @throws IllegalArgumentException é lançado quando o comprimento de uma linha da população inicial é maior que o número de colunas.
+     */
+
+     int [][] generateGrid(String initialPopulation, int height, int width) {
+//        Inicia-se com os valores 0's
         int [][] grid = new int[height][width];
         String[] rows = initialPopulation.split("#");
-//             Preenche o grid com 0's
-        for (int i = 0; i < grid.length; i++) {
-            Arrays.fill(grid[i], 0);
-        }
+
 //            Insere as células vivas ou mortas com base na população inicial
         for (int i = 0; i < rows.length; i++) {
 
@@ -37,14 +34,13 @@ public class Grid {
                 }
             } else {
                 int removeValues = rows[i].length() - width;
-                System.out.println("The size of the line " + rows[i] + " is greater than the length of the table." + " Remove " + removeValues + " values.");
-                System.exit(0);
+                throw new IllegalArgumentException("The size of the line " + rows[i] + " is greater than the length of the table. Remove " + removeValues + " values.");
             }
         }
         return grid;
     }
 
-    void showGrid(int[][] grid) {
+    void showGrid() {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 System.out.print(grid[i][j] + " ");
@@ -53,7 +49,7 @@ public class Grid {
         }
     }
 
-    private static int countNeighbors(int[][] grid, int i, int j, int type) {
+    private int countNeighbors(int i, int j, int type) {
         int neighbors = 0;
 //              Percorre os vizinhos dos eixos i e j
         for(int neighborI = -1; neighborI <= 1; neighborI++) {
@@ -103,12 +99,12 @@ public class Grid {
 
     }
 
-    public static int[][] checkCells(int[][] grid, int type) {
+    public void checkCells(int type) {
         int[][] neighborsGrid = new int[grid.length][grid[0].length];
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
 
-                int neighbors = countNeighbors(grid, i, j, type);
+                int neighbors = countNeighbors(i, j, type);
 
 //                Aplicando as regras do GoL para cada célula
                 if (grid[i][j] == 1) {
@@ -118,6 +114,6 @@ public class Grid {
                 }
             }
         }
-        return neighborsGrid;
+        grid = neighborsGrid;
     }
 }

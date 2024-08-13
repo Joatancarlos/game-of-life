@@ -2,12 +2,12 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class GameConfig {
-    public int height;
-    public int width;
-    public int totalGeneration;
-    public int speed;
-    public String initialPopulation;
-    public int typeNeighborhood;
+    private final int height;
+    private final int width;
+    private final int totalGeneration;
+    private final int speed;
+    private final String initialPopulation;
+    private final int typeNeighborhood;
 
     public GameConfig(int height, int width, int totalGeneration, int speed, String initialPopulation, int typeNeighborhood) {
         this.height = height;
@@ -16,6 +16,25 @@ public class GameConfig {
         this.speed = speed;
         this.initialPopulation = initialPopulation;
         this.typeNeighborhood = typeNeighborhood;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+    public int getWidth() {
+        return width;
+    }
+    public int getTotalGeneration() {
+        return totalGeneration;
+    }
+    public int getSpeed() {
+        return speed;
+    }
+    public String getInitialPopulation() {
+        return initialPopulation;
+    }
+    public int getTypeNeighborhood() {
+        return typeNeighborhood;
     }
 
     public static String randomInitialPopulation (int height, int width) {
@@ -110,8 +129,7 @@ public class GameConfig {
                     break;
                 case 4:
                     try {
-                        String population = args[count].split("=")[1];
-                        initialPopulation = population;
+                        initialPopulation = args[count].split("=")[1];
                     } catch (ArrayIndexOutOfBoundsException e) {
                         initialPopulation = randomInitialPopulation(height, width);
                     }

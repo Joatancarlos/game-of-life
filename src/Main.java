@@ -1,25 +1,23 @@
 // Joatan Carlos Farias Feitosa
 public class Main {
     public static void main(String[] args) {
-        GameConfig gameConfig = GameConfig.parseArgs(args);
+        GameConfig config = GameConfig.parseArgs(args);
+        Grid grid = new Grid(config);
 
-        Grid grid = new Grid(gameConfig);
-        int [][] generateGrid = grid.generateGrid();
-        int currentGeneretion = 0;
+        int currentGeneration = 0;
+        boolean infiniteGeneration = config.getTotalGeneration() == 0;
 
-//        Caso o parâmetro seja 0, o while vai rodar infinitamente.
-        while (gameConfig.totalGeneration == 0 ? true : currentGeneretion < gameConfig.totalGeneration) {
-//              Analisar o grid e verificar as regras
+        while (infiniteGeneration || currentGeneration < config.getTotalGeneration()) {
             try {
-                System.out.println("Stats: Grid size: [" + gameConfig.height + " x " + gameConfig.width + "] - Speed: [" + gameConfig.speed + " ms] - Generation: [" + currentGeneretion + "] ");
-                grid.showGrid(generateGrid);
-                System.out.println();
-                generateGrid = grid.checkCells(generateGrid, gameConfig.typeNeighborhood);
-                Thread.sleep(gameConfig.speed);
+                System.out.printf("Stats: Grid size: [%d x %d] - Speed: [%d ms] - Generation: [%d]%n",
+                        config.getHeight(), config.getWidth(), config.getSpeed(), currentGeneration);
+                grid.showGrid();
+                grid.checkCells(config.getTypeNeighborhood());
+                Thread.sleep(config.getSpeed());
+                currentGeneration++;
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            currentGeneretion++;
         }
     }
 }
