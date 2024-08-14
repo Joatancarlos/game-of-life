@@ -8,8 +8,7 @@ public class Grid {
 
     /**
      * Gera um grid bidimensional com valores iniciais definidos como 0. Esses valores podem
-     * ser alterados para 1 (célula viva) ou permanecer como 0 (célula morta) de
-     * acordo com a população inicial fornecida.
+     * ser alterados para 1 (célula viva) ou permanecer como 0 (célula morta) segundo a população inicial fornecida.
      * @param initialPopulation É uma ‘string’ que representa as linhas do grid sendo composta por 0's e 1's.
      * @param height Número de linhas do grid.
      * @param width Número de colunas do grid.
@@ -40,6 +39,9 @@ public class Grid {
         return grid;
     }
 
+    /**
+     * Exibe o conteúdo da matriz seguindo o número de linhas e colunas.
+     */
     void showGrid() {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
@@ -48,6 +50,22 @@ public class Grid {
             System.out.println();
         }
     }
+
+    /**
+     * Conta o número de células vizinhas vivas ao redor de uma célula específica numa grade,
+     * considerando o tipo de vizinhança definida.
+     * @param i posição da linha da célula
+     * @param j posição da coluna da célula
+     * @param type o tipo de vizinhança a ser considerada. Os valores possíveis são:
+     *              <ul>
+     *                 <li>1: Considera apenas os vizinhos ortogonais <strong>(exclui as diagonais)</strong>.</li>
+     *                 <li>2: Exclui as diagonais principais <strong>(superior esquerda e inferior direita)</strong>.</li>
+     *                 <li>3: Considera <strong>todos</strong> os vizinhos ao redor da célula.</li>
+     *                 <li>4: Considera apenas os vizinhos nas direções cardinais <strong>(cima, baixo, esquerda, direita)</strong>.</li>
+     *                 <li>5: Considera apenas os vizinhos nas direções horizontal <strong>(esquerda e direita)</strong>.</li>
+     *               </ul>
+     * @return Um 'int.' que representa quantidade de vizinhos da célula analisada
+     */
 
     private int countNeighbors(int i, int j, int type) {
         int neighbors = 0;
@@ -99,7 +117,11 @@ public class Grid {
 
     }
 
-    public void checkCells(int type) {
+    /**
+     * Atualiza o grid para a nova geração com os novos valores das células aplicando as regras do Game of Life.
+     * @param type indica o padrão de vizinhaça que será analisada
+     */
+    public void updateGrid(int type) {
         int[][] neighborsGrid = new int[grid.length][grid[0].length];
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {

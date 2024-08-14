@@ -37,6 +37,14 @@ public class GameConfig {
         return typeNeighborhood;
     }
 
+    /**
+     * Irá criar uma população inicial que contém '0's (células mortas), '1's (células vivas), e
+     * '#'s como delimitadores de linha.
+     * @param height informa o número máximo de linhas ('#') que poderá implementado.
+     * @param width informa o número máximo de 0's e 1's que estarão contidos numa linha.
+     * @return uma ‘string’ representando a população inicial aleatória, com '0's, '1's e '#'s.
+     */
+
     public static String randomInitialPopulation (int height, int width) {
 //        O número de '#' tem que ser menor ou igual a height
 //        O número de 0's ou 1's tem que ser menor ou igual a width
@@ -57,6 +65,19 @@ public class GameConfig {
         return randomPopulation;
     }
 
+    /**
+     * Converte os argumentos de linha de comando em uma configuração para o jogo. Os parâmetros aceitos são:
+     *   <ul>
+     *     <li><strong>height</strong>: Altura da grade (valores válidos: 10, 20, 40).</li>
+     *     <li><strong>width</strong>: Largura da grade (valores válidos: 10, 20, 40, 80).</li>
+     *     <li><strong>totalGeneration</strong>: Número total de gerações a serem executadas (deve ser >= 0).</li>
+     *     <li><strong>speed</strong>: Velocidade em milissegundos entre as gerações (intervalo válido: 250-1000 ms).</li>
+     *     <li><strong>initialPopulation</strong>: String representando a população inicial (opcional, valor padrão gerado aleatoriamente).</li>
+     *     <li><strong>typeNeighborhood</strong>: Tipo de vizinhança a ser usada (valores válidos: 1, 2, 3, 4, 5).</li>
+     *   </ul>
+     * @param args args um array de ‘strings’ contendo os argumentos de linha de comando.
+     * @return um objeto {@link GameConfig} contendo as configurações do jogo.
+     */
     public static GameConfig parseArgs(String[] args) {
         int height = 10;
         int width = 20;

@@ -12,7 +12,7 @@ public class Main {
                 System.out.printf("Stats: Grid size: [%d x %d] - Speed: [%d ms] - Generation: [%d]%n",
                         config.getHeight(), config.getWidth(), config.getSpeed(), currentGeneration);
                 grid.showGrid();
-                grid.checkCells(config.getTypeNeighborhood());
+                grid.updateGrid(config.getTypeNeighborhood());
                 Thread.sleep(config.getSpeed());
                 currentGeneration++;
             } catch (InterruptedException e) {
