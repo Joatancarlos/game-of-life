@@ -9,7 +9,14 @@ public class GameConfig {
     private final String initialPopulation;
     private final int typeNeighborhood;
 
-    public GameConfig(int height, int width, int totalGeneration, int speed, String initialPopulation, int typeNeighborhood) {
+    public GameConfig(
+            int height,
+            int width,
+            int totalGeneration,
+            int speed,
+            String initialPopulation,
+            int typeNeighborhood
+    ) {
         this.height = height;
         this.width = width;
         this.totalGeneration = totalGeneration;
@@ -55,8 +62,8 @@ public class GameConfig {
         String randomPopulation = "";
 
         for (int i = 0; i < numHash; i++) {
-            int numRow = random.nextInt(width+1);
-            for (int j = 0; j < numRow; j++) {
+            int numCol = random.nextInt(width+1);
+            for (int j = 0; j < numCol; j++) {
                 int cellState = random.nextInt(2);
                 randomPopulation += cellState;
             }
@@ -178,5 +185,16 @@ public class GameConfig {
         }
 
         return new GameConfig(height, width, totalGeneration, speed, initialPopulation, typeNeighborhood);
+/*
+        No python, é como se eu estivesse retornando um dicionário com todos os atributos desta classe. Ex:
+        return {
+            height: 10;
+            width: 20;
+            totalGeneration: 5;
+            speed: 250;
+            initialPopulation: "#011##011111";
+            typeNeighborhood: 1;
+        }
+ */
     }
 }
