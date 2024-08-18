@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class GameConfig {
     private final int height;
@@ -73,6 +74,39 @@ public class GameConfig {
     }
 
     /**
+     * Verifica se uma string de população inicial é válida. A string é considerada válida se:
+     * <ul>
+     *   <li>Os caracteres em cada linha (delimitada por '#') forem apenas '0' ou '1'.</li>
+     *   <li>Cada linha tiver um comprimento menor ou igual ao valor especificado de largura (width).</li>
+     * </ul>
+     * Se qualquer linha contiver um caractere inválido ou exceder a largura especificada, o método retorna `true`.
+     * Caso contrário, retorna `false`.
+     *
+     * @param population A string representando a população inicial, onde cada linha é separada por '#'.
+     * @param width A largura máxima permitida para cada linha na string de população.
+     * @return `true` se a string de população inicial for inválida, `false` se for válida.
+     * @throws NumberFormatException Se algum caractere na string não puder ser convertido para um número.
+     */
+    public static boolean invalideInitialP(String population, int width) {
+
+        String[] rows = population.split("#");
+
+        for (int i = 0; i < rows.length; i++) {
+            if (rows[i].length() <= width) {
+                for (int j = 0; j < rows[i].length(); j++) {
+                    char c = rows[i].charAt(j);
+                    if (!Arrays.asList(0, 1).contains(Integer.parseInt(String.valueOf(c)))) {
+                        return true;
+                    }
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Converte os argumentos de linha de comando em uma configuração para o jogo. Os parâmetros aceitos são:
      *   <ul>
      *     <li><strong>height</strong>: Altura da grade (valores válidos: 10, 20, 40).</li>
@@ -82,119 +116,113 @@ public class GameConfig {
      *     <li><strong>initialPopulation</strong>: String representando a população inicial (opcional, valor padrão gerado aleatoriamente).</li>
      *     <li><strong>typeNeighborhood</strong>: Tipo de vizinhança a ser usada (valores válidos: 1, 2, 3, 4, 5).</li>
      *   </ul>
-     * @param args args um array de ‘strings’ contendo os argumentos de linha de comando.
      * @return um objeto {@link GameConfig} contendo as configurações do jogo.
      */
-    public static GameConfig parseArgs(String[] args) {
-        int height = 10;
-        int width = 20;
-        int totalGeneration = 5;
-        int speed = 250;
-        String initialPopulation = "#011##011111";
-        int typeNeighborhood = 1;
+    public static GameConfig parseArgs() {
+        Scanner sc = new Scanner(System.in);
 
-        int count = 0;
-        while (count < args.length) {
-            switch (count) {
-                case 0:
-                    int[] validHeight = {10, 20, 40};
-                    try {
-                        int numHeight = Integer.parseInt(args[count].split("=")[1]);
-                        if (Arrays.stream(validHeight).anyMatch(num -> num == numHeight)) {
-                            height = numHeight;
-                        } else {
-                            System.out.println("Invalid Height");
-                            System.exit(0);
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input! Height must be a number.");
-                        System.exit(0);
-                    }
+        int height;
+        System.out.println("Insira os valores 10, 20 ou 40 para a quantidade de linhas: ");
+        while (true) {
+            try {
+                height = sc.nextInt();
+                if (Arrays.asList(10, 20, 40).contains(height)) {
                     break;
-                case 1:
-                    int[] validWidth = {10, 20, 40, 80};
-                    try {
-                        int numWidth = Integer.parseInt(args[count].split("=")[1]);
-                        if (Arrays.stream(validWidth).anyMatch(num -> num == numWidth)) {
-                            width = numWidth;
-                        } else {
-                            System.out.println("Invalid Width");
-                            System.exit(0);
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input! Width must be a number.");
-                        System.exit(0);
-                    }
-                    break;
-                case 2:
-                    try {
-                        int numGen = Integer.parseInt(args[count].split("=")[1]);
-                        if (numGen >= 0) {
-                            totalGeneration = numGen;
-                        } else {
-                            System.out.println("Number of generations must be more than 0");
-                            System.exit(0);
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input! Number of generations must be a number.");
-                        System.exit(0);
-                    }
-                    break;
-                case 3:
-                    try {
-                        int[] validSpeed = {250, 1000};
-                        int numSpeed = Integer.parseInt(args[count].split("=")[1]);
-                        if (numSpeed >= validSpeed[0] && numSpeed <= validSpeed[1]) {
-                            speed = numSpeed;
-                        } else {
-                            System.out.println("The speed value should be between 250-1000 ms");
-                            System.exit(0);
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input! Speed must be a number.");
-                        System.exit(0);
-                    }
-                    break;
-                case 4:
-                    try {
-                        initialPopulation = args[count].split("=")[1];
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        initialPopulation = randomInitialPopulation(height, width);
-                    }
-                    break;
-                case 5:
-                    try {
-                        int[] validType = {1, 2, 3, 4, 5};
-                        int numType = Integer.parseInt(args[count].split("=")[1]);
-                        if (numType >= validType[0] && numType <= validType[4]) {
-                            typeNeighborhood = numType;
-                        } else {
-                            System.out.println("The Type neighborhood should be between 1 and 5.");
-                            System.exit(0);
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input! Type neighborhood must be a number.");
-                        System.exit(0);
-                    }
-                    break;
-                default:
-                    System.out.println("Insufficient arguments");
-                    System.exit(0);
+                } else {
+                    System.out.println("Valor inválido. Por favor, insira uma das 3 opções: 10, 20, ou 40.");
+                }
+            } catch (Exception e) {
+                System.out.println("Opa! Esse valor é inválido. Por gentileza, insira somente números.");
+                sc.next();
             }
-            count++;
+        }
+
+        int width;
+        System.out.println("Insira os valores 10, 20, 40 ou 80 para a quantidade de colunas: ");
+        while (true) {
+            try {
+                width = sc.nextInt();
+                if (Arrays.asList(10, 20, 40, 80).contains(width)) {
+                    break;
+                } else {
+                    System.out.println("Valor inválido. Por favor, insira uma das 4 opções: 10, 20, 40 ou 80.");
+                }
+            } catch (Exception e) {
+                System.out.println("Opa! Esse valor é inválido. Por gentileza, insira somente números.");
+                sc.next();
+            }
+        }
+
+        int totalGeneration;
+        System.out.println("Insira um valor maior ou igual a 0 para o número total de gerações: ");
+        while (true) {
+            try {
+                totalGeneration = sc.nextInt();
+                if (totalGeneration >= 0) {
+                    break;
+                } else {
+                    System.out.println("O número de gerações tem que ser maior ou igual a 0");
+                }
+            } catch (Exception e) {
+                System.out.println("Opa! Esse valor é inválido. Por gentileza, insira somente números.");
+                sc.next();
+            }
+        }
+
+        int speed;
+        System.out.println("Insira a velocidade (ms). O valor tem que estar em um intervalo entre 250-1000: ");
+        while (true) {
+            try {
+                speed = sc.nextInt();
+                if (speed >= 250 && speed <= 1000) {
+                    break;
+                } else {
+                    System.out.println("A velocidade tem que estar entre 250 e 1000 ms.");
+                }
+            } catch (Exception e) {
+                System.out.println("Opa! Esse valor é inválido. Por gentileza, insira somente números.");
+                sc.next();
+            }
+        }
+
+        System.out.println("Insira a população inicial. Caso deseje, pressione Enter sem nenhum valor para gerar uma população aleatória: ");
+        sc.nextLine();
+        String initialPopulation;
+        while (true) {
+            try {
+                initialPopulation = sc.nextLine().trim();
+                if (initialPopulation.isEmpty()) {
+                    initialPopulation = randomInitialPopulation(height, width);
+                    break;
+                }
+                if(invalideInitialP(initialPopulation, width)) {
+                    System.out.println("Opa! Esse valor é inválido. Por gentileza, insira valores 0's ou 1's separados por '#' ou verifique se a quantidade de células é menor que o número de colunas.");
+                } else {
+                    break;
+                }
+
+            } catch (Exception e) {
+                System.out.println("Opa! Esse valor é inválido. Por gentileza, insira valores 0's ou 1's separados por '#' ");
+                sc.next();
+            }
+        }
+
+        int typeNeighborhood;
+        System.out.println("Insira o tipo de vizinhaça com valores entre 1-5: ");
+        while (true) {
+            try {
+                typeNeighborhood = sc.nextInt();
+                if (typeNeighborhood >= 1 && typeNeighborhood <= 5) {
+                    break;
+                } else {
+                    System.out.println("O tipo de vizinhaça deve estar entre 1 e 5.");
+                }
+            } catch (Exception e) {
+                System.out.println("Opa! Esse valor é inválido. Por gentileza, insira somente números.");
+                sc.next();
+            }
         }
 
         return new GameConfig(height, width, totalGeneration, speed, initialPopulation, typeNeighborhood);
-/*
-        No python, é como se eu estivesse retornando um dicionário com todos os atributos desta classe. Ex:
-        return {
-            height: 10;
-            width: 20;
-            totalGeneration: 5;
-            speed: 250;
-            initialPopulation: "#011##011111";
-            typeNeighborhood: 1;
-        }
- */
     }
 }

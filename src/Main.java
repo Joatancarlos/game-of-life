@@ -1,7 +1,7 @@
 // Joatan Carlos Farias Feitosa
 public class Main {
     public static void main(String[] args) {
-        GameConfig config = GameConfig.parseArgs(args);
+        GameConfig config = GameConfig.parseArgs();
         Grid grid = new Grid(config);
 
         int currentGeneration = 0;
